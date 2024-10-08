@@ -3,7 +3,7 @@ using GeoMaths.Types;
 
 namespace GeoMaths
 {
-  
+
     public class GeoMaths : IGeoMaths
     {
         public GeoMaths()
@@ -26,30 +26,6 @@ namespace GeoMaths
             double lng0 = lng1 + Math.Atan2(y, x);
 
             return new GeoCoord(Maths.toDegrees(lat0), Maths.toDegrees(lng0));
-        }
-
-        public GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference)
-        {
-            // Get the lat-lon of the primary point in radians
-            double lat0 = Maths.toRadians(primary.lat);
-            double lng0 = Maths.toRadians(primary.lng);
-
-            // Get the angular distance from the primary point
-            double ds = Math.Sqrt(Math.Pow(ds_east, 2.0) + Math.Pow(ds_north, 2.0));
-            ds /= Constants.EARTH_SEMI_MAJOR_AXIS;
-
-            // Calculate the bearing
-            double theta = Math.Atan2(ds_east, ds_north);
-
-            // Calculate the latitude of the target position
-            double lat1 = Math.Asin(Math.Sin(lat0) * Math.Cos(ds) + Math.Cos(lat0) * Math.Sin(ds) * Math.Cos(theta));
-
-            // Calculate the target longitude
-            double lng1 = lng0 + Math.Atan2(Math.Sin(theta) * Math.Sin(ds) * Math.Cos(lat0),
-                Math.Cos(ds) - Math.Sin(lat0) * Math.Sin(lat1));
-
-            // Convert lat lon from radians to degrees
-            return new GeoCoord(Maths.toDegrees(lat1), Maths.toDegrees(lng1));
         }
 
         public GeoCoord CalcPosition(GeoCoord primary, double ds_north, double ds_east)
