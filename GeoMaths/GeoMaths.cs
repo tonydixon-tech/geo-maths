@@ -1,37 +1,16 @@
-﻿//  ///////////////////////////////////////////////////////////////////////////
-//  GeoMaths.cs
-//
-//  Author:
-//       tonydixon <anthonydixon56@yahoo.com>
-//       21/11/2020
-//
-//  Copyright (c) 2020 Anthony Dixon
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//  ///////////////////////////////////////////////////////////////////////////
-using System;
+﻿using System;
 using GeoMaths.Types;
 
 namespace GeoMaths
 {
+  
     public class GeoMaths : IGeoMaths
     {
         public GeoMaths()
         {
         }
 
-        public Coord CalcPosition(double degrees, double distance, Coord reference)
+        public GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference)
         {
             double lat1 = reference.lat;
             double lng1 = reference.lng;
@@ -46,10 +25,10 @@ namespace GeoMaths
             double x = Math.Cos(ds_angular) - Math.Sin(lat1) * Math.Sin(lat0);
             double lng0 = lng1 + Math.Atan2(y, x);
 
-            return new Coord(Maths.toDegrees(lat0), Maths.toDegrees(lng0));
+            return new GeoCoord(Maths.toDegrees(lat0), Maths.toDegrees(lng0));
         }
 
-        public Coord CalcPosition(Coord primary, double ds_north, double ds_east)
+        public GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference)
         {
             // Get the lat-lon of the primary point in radians
             double lat0 = Maths.toRadians(primary.lat);
@@ -70,10 +49,34 @@ namespace GeoMaths
                 Math.Cos(ds) - Math.Sin(lat0) * Math.Sin(lat1));
 
             // Convert lat lon from radians to degrees
-            return new Coord(Maths.toDegrees(lat1), Maths.toDegrees(lng1) );
+            return new GeoCoord(Maths.toDegrees(lat1), Maths.toDegrees(lng1));
         }
 
-        public double HDistance(Coord pointA, Coord pointB)
+        public GeoCoord CalcPosition(GeoCoord primary, double ds_north, double ds_east)
+        {
+            // Get the lat-lon of the primary point in radians
+            double lat0 = Maths.toRadians(primary.lat);
+            double lng0 = Maths.toRadians(primary.lng);
+
+            // Get the angular distance from the primary point
+            double ds = Math.Sqrt(Math.Pow(ds_east, 2.0) + Math.Pow(ds_north, 2.0));
+            ds /= Constants.EARTH_SEMI_MAJOR_AXIS;
+
+            // Calculate the bearing
+            double theta = Math.Atan2(ds_east, ds_north);
+
+            // Calculate the latitude of the target position
+            double lat1 = Math.Asin(Math.Sin(lat0) * Math.Cos(ds) + Math.Cos(lat0) * Math.Sin(ds) * Math.Cos(theta));
+
+            // Calculate the target longitude
+            double lng1 = lng0 + Math.Atan2(Math.Sin(theta) * Math.Sin(ds) * Math.Cos(lat0),
+                Math.Cos(ds) - Math.Sin(lat0) * Math.Sin(lat1));
+
+            // Convert lat lon from radians to degrees
+            return new GeoCoord(Maths.toDegrees(lat1), Maths.toDegrees(lng1));
+        }
+
+        public double HDistance(GeoCoord pointA, GeoCoord pointB)
         {
             // Copy coords to local radian variables
             double lat1 = Maths.toRadians(pointA.lat);
@@ -90,33 +93,9 @@ namespace GeoMaths
             return ds;
         }
 
-        public double Heading(Coord pointA, Coord pointB)
+        public double Heading(GeoCoord pointA, GeoCoord pointB)
         {
-            double latA = Maths.toRadians(pointA.lat);
-            double lonA = Maths.toRadians(pointA.lng);
-            double latB = Maths.toRadians(pointB.lat);
-            double lonB = Maths.toRadians(pointB.lng);
-
-            // Get the difference in longitudes
-            double delta = lonB - lonA;
-            double y = Math.Sin(delta) * Math.Cos(latB);
-            double x = Math.Cos(latA) * Math.Sin(latB) - Math.Sin(latA) * Math.Cos(latB) * Math.Cos(delta);
-
-            double bearing = Maths.toDegrees(Math.Atan2(y, x));
-
-            bearing = FromNorth(bearing);
-
-            return bearing;
-        }
-
-        /// <summary>
-        /// Converts a bearing to degrees from north
-        /// </summary>
-        /// <param name="bearing"></param>
-        /// <returns></returns>
-        private double FromNorth(double bearing)
-        {
-            return (bearing + 360.0) % 360.0;
+            throw new System.NotImplementedException();
         }
     }
 }

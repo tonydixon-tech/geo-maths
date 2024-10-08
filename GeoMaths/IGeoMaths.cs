@@ -28,23 +28,23 @@ namespace GeoMaths
     public interface IGeoMaths
     {
         /// <summary>
-        /// Calculate the geo coordinates of a point lying at a 
+        /// Calculate the geo GeoCoordinates of a point lying at a 
         /// distance in metres along a given bearing
         /// </summary>
         /// <param name="degrees"></param>
         /// <param name="distance"></param>
         /// <param name="reference"></param>
         /// <returns></returns>
-        Coord CalcPosition(double degrees, double distance, Coord reference);
+        GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference);
 
         /// <summary>
-        /// Calculate a geo coordinate at a point metres north and east of a primary position
+        /// Calculate a geo GeoCoordinate at a point metres north and east of a primary position
         /// </summary>
         /// <param name="primary"></param>
         /// <param name="ds_north"></param>
         /// <param name="ds_east"></param>
         /// <returns></returns>
-        Coord CalcPosition(Coord primary, double ds_north, double ds_east);
+        GeoCoord CalcPosition(GeoCoord primary, double ds_north, double ds_east);
 
         /// <summary>
         /// Calculates the distancle between two points using the Haversine formula
@@ -52,7 +52,7 @@ namespace GeoMaths
         /// <param name="pointA"></param>
         /// <param name="pointB"></param>
         /// <returns></returns>
-        double HDistance(Coord pointA, Coord pointB);
+        double HDistance(GeoCoord pointA, GeoCoord pointB);
 
         /// <summary>
         /// Calculate the heading in degrees from point A to point B.
@@ -61,6 +61,6 @@ namespace GeoMaths
         /// <param name="pointA"></param>
         /// <param name="pointB"></param>
         /// <returns></returns>
-        double Heading(Coord pointA, Coord pointB);
+        double Heading(GeoCoord pointA, GeoCoord pointB);        
     }
 }

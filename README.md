@@ -1,2 +1,0 @@
-# geo-maths
-geo-maths
