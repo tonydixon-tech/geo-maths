@@ -1,3 +1,5 @@
+using GeoMaths.Types;
+
 namespace GeoMaths.Test
 {
 
@@ -27,7 +29,12 @@ namespace GeoMaths.Test
         [Test]
         public void TestHDistance_coord_coord()
         {
-            Assert.Pass();
+            Console.WriteLine("Testing HDistance");
+            GeoCoord start = new GeoCoord(0.0, 0.0);
+            GeoCoord finish = new GeoCoord(0.0, 1.0);
+            double actual = _geoMaths.HDistance(start, finish);
+            double expected = 0;
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 

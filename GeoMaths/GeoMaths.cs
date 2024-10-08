@@ -69,9 +69,34 @@ namespace GeoMaths
             return ds;
         }
 
+
         public double Heading(GeoCoord pointA, GeoCoord pointB)
         {
-            throw new System.NotImplementedException();
+            double latA = Maths.toRadians(pointA.lat);
+            double lonA = Maths.toRadians(pointA.lng);
+            double latB = Maths.toRadians(pointB.lat);
+            double lonB = Maths.toRadians(pointB.lng);
+
+            // Get the difference in longitudes
+            double delta = lonB - lonA;
+            double y = Math.Sin(delta) * Math.Cos(latB);
+            double x = Math.Cos(latA) * Math.Sin(latB) - Math.Sin(latA) * Math.Cos(latB) * Math.Cos(delta);
+
+            double bearing = Maths.toDegrees(Math.Atan2(y, x));
+
+            bearing = FromNorth(bearing);
+
+            return bearing;
+        }
+
+        /// <summary>
+        /// Converts a bearing to degrees from north
+        /// </summary>
+        /// <param name="bearing"></param>
+        /// <returns></returns>
+        private double FromNorth(double bearing)
+        {
+            return (bearing + 360.0) % 360.0;
         }
     }
 }
