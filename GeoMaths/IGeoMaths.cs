@@ -29,25 +29,25 @@ namespace GeoMaths
     {
         /// <summary>
         /// Calculate the geo GeoCoordinates of a point lying at a 
-        /// distance in metres along a given bearing
+        /// distance in nautical miles along a given bearing
         /// </summary>
         /// <param name="degrees"></param>
-        /// <param name="distance"></param>
+        /// <param name="nm_distance"></param>
         /// <param name="reference"></param>
         /// <returns></returns>
-        GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference);
+        GeoCoord CalcPosition(double degrees, double nm_distance, GeoCoord reference);
 
         /// <summary>
-        /// Calculate a geo GeoCoordinate at a point metres north and east of a primary position
+        /// Calculate a geo GeoCoordinate at a point nautical miles north and east of a primary position
         /// </summary>
         /// <param name="primary"></param>
-        /// <param name="ds_north"></param>
-        /// <param name="ds_east"></param>
+        /// <param name="nm_north"></param>
+        /// <param name="nm_east"></param>
         /// <returns></returns>
-        GeoCoord CalcPosition(GeoCoord primary, double ds_north, double ds_east);
+        GeoCoord CalcPosition(GeoCoord primary, double nm_north, double nm_east);
 
         /// <summary>
-        /// Calculates the distancle between two points using the Haversine formula
+        /// Calculates the distancle in nautical miles between two points using the Haversine formula
         /// </summary>
         /// <param name="pointA"></param>
         /// <param name="pointB"></param>

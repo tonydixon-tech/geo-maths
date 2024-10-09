@@ -10,12 +10,15 @@ namespace GeoMaths
         {
         }
 
-        public GeoCoord CalcPosition(double degrees, double distance, GeoCoord reference)
+        public GeoCoord CalcPosition(double degrees, double nm_distance, GeoCoord reference)
         {
+            // Convert the distance from nm to metres
+            double m_distance = nm_distance*Constants.METRES_PER_NM;
+
             double lat1 = reference.lat;
             double lng1 = reference.lng;
             double bearing = Maths.toRadians(degrees);
-            double ds_angular = distance / Constants.EARTH_SEMI_MAJOR_AXIS;
+            double ds_angular = m_distance / Constants.EARTH_SEMI_MAJOR_AXIS;
 
             // Calculate the latitude of the point
             double lat0 = Math.Asin(Math.Sin(lat1) * Math.Cos(ds_angular) + Math.Cos(lat1) * Math.Sin(ds_angular) * Math.Cos(bearing));
@@ -30,16 +33,19 @@ namespace GeoMaths
 
         public GeoCoord CalcPosition(GeoCoord primary, double ds_north, double ds_east)
         {
+            double m_north = ds_north * Constants.METRES_PER_NM;
+            double m_east = ds_east * Constants.METRES_PER_NM;
+
             // Get the lat-lon of the primary point in radians
             double lat0 = Maths.toRadians(primary.lat);
             double lng0 = Maths.toRadians(primary.lng);
 
             // Get the angular distance from the primary point
-            double ds = Math.Sqrt(Math.Pow(ds_east, 2.0) + Math.Pow(ds_north, 2.0));
+            double ds = Math.Sqrt(Math.Pow(m_east, 2.0) + Math.Pow(m_north, 2.0));
             ds /= Constants.EARTH_SEMI_MAJOR_AXIS;
 
             // Calculate the bearing
-            double theta = Math.Atan2(ds_east, ds_north);
+            double theta = Math.Atan2(m_east, m_north);
 
             // Calculate the latitude of the target position
             double lat1 = Math.Asin(Math.Sin(lat0) * Math.Cos(ds) + Math.Cos(lat0) * Math.Sin(ds) * Math.Cos(theta));
@@ -66,7 +72,7 @@ namespace GeoMaths
             var angle = Math.Pow(Math.Sin(dsLat / 2), 2) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Pow(Math.Sin(dsLon / 2), 2);
             var c = 2 * Math.Atan2(Math.Sqrt(angle), Math.Sqrt(1 - angle));
             double ds = Constants.EARTH_SEMI_MAJOR_AXIS * c;
-            return ds;
+            return ds / Constants.METRES_PER_NM;
         }
 
 
