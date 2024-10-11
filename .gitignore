@@ -7,3 +7,5 @@
 /GeoMaths.Test/bin/**
 /GeoMaths.Test/obj/**
 /.vs/**
+
+.fake
