@@ -15,7 +15,7 @@ namespace GeoMaths.Test
         }
 
         [TestCaseSource(nameof(CalcPositionBearingDistanceCases))]
-        public void TestCalcPosition_deg_dist_ref(double degrees, double nm_distance, GeoCoord reference, GeoCoord expected, double delta)
+        public void TestCalcPosition_shouldReturnCoordinateAtDistanceAndHeading(double degrees, double nm_distance, GeoCoord reference, GeoCoord expected, double delta)
         {
             GeoCoord actual = _geoMaths.CalcPosition(degrees, nm_distance, reference);
             Assert.That(actual.lat, Is.EqualTo(expected.lat).Within(delta), "expected latitude is incorrect");
@@ -23,7 +23,7 @@ namespace GeoMaths.Test
         }
 
         [TestCaseSource(nameof(CalcPositionNorthEastCases))]
-        public void TestCalcPosition_primary_north_east(GeoCoord primary, double nm_north, double nm_east, GeoCoord expected, double delta)
+        public void TestCalcPosition_shouldReturnCoordinateNorthAndEastOfCurrentPosition(GeoCoord primary, double nm_north, double nm_east, GeoCoord expected, double delta)
         {
             GeoCoord actual = _geoMaths.CalcPosition(primary, nm_north, nm_east);
 
@@ -32,7 +32,7 @@ namespace GeoMaths.Test
         }
 
         [TestCaseSource(nameof(HaversineGeoCoordCases))]
-        public void TestHDistance_coord_coord(GeoCoord start, GeoCoord finish, double expected, double delta)
+        public void TestHDistance_shouldReturnHaversineDistanceBetweenTwoCoordinates(GeoCoord start, GeoCoord finish, double expected, double delta)
         {
             Console.WriteLine("Testing HDistance");
             double actual = _geoMaths.HDistance(start, finish);
@@ -49,7 +49,7 @@ namespace GeoMaths.Test
         [TestCase(0.0, 0.0, -1.0, -1.0, 225.0, 0.01d)]
         [TestCase(0.0, 0.0, 0.0, -1.0, 270.0, 0.01d)]
         [TestCase(0.0, 0.0, 1.0, -1.0, 315.0, 0.01d)]
-        public void TestHeading(double lat0, double lon0, double lat1, double lon1, double expected, double delta)
+        public void TestHeading_shouldReturnHeadingToCoordinateFromReferenceCoordinate(double lat0, double lon0, double lat1, double lon1, double expected, double delta)
         {
             Console.WriteLine("Testing Heading {0} deg", expected);
             double actual = _geoMaths.Heading(new GeoCoord(lat0, lon0), new GeoCoord(lat1, lon1));
